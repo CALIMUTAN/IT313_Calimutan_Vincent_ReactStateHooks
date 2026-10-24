@@ -1,56 +1,88 @@
-# Welcome to your Expo app 👋
+# IT 313 – Laboratory 5: React State & Hooks in Action
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Project Description
 
-## Get started
+This project is a simple mobile application built using React Native and Expo. It demonstrates how React state and hooks work through a Practice Tracker and a Stopwatch.
 
-1. Install dependencies
+## Features
+
+- **Practice Tracker:** Displays the number of solved problems.
+- **Solve +1 Button:** Increases the solved count by one.
+- **Reset Button:** Resets the solved count to zero.
+- **Great job! Message:** Appears when the solved count reaches five or more.
+- **Stopwatch:** Tracks elapsed time in seconds.
+- **Start and Stop Buttons:** Start and pause the stopwatch.
+- **Running Status:** Displays whether the stopwatch is running or paused.
+
+## Technologies Used
+
+- React Native
+- Expo
+- TypeScript
+- React Hooks
+
+## React Concepts Used
+
+### 1. useState
+
+Used to store and update the solved count, stopwatch seconds, and running status.
+
+### 2. useEffect
+
+Used to manage the stopwatch interval when the running status changes.
+
+### 3. Custom Hook
+
+The `useStopwatch` custom hook contains the logic for tracking elapsed time.
+
+### 4. Props
+
+Props pass data and event handler functions between `LabScreen`, `PracticeTracker`, and `Stopwatch`.
+
+### 5. Lifting State Up
+
+The `LabScreen` component manages shared state and passes the necessary values and functions to its child components.
+
+### 6. Cleanup Function
+
+The `clearInterval()` function cleans up the stopwatch interval to prevent unwanted timer behavior.
+
+## Project Components
+
+- `LabScreen` – Main screen that manages the application state.
+- `PracticeTracker` – Displays and updates the solved count.
+- `Stopwatch` – Displays elapsed seconds and timer status.
+- `useStopwatch` – Custom hook that manages stopwatch logic.
+
+## How to Run the Project
+
+1. Install Node.js on your computer.
+2. Open a terminal in the project folder.
+3. Install the project dependencies:
 
    ```bash
    npm install
    ```
 
-2. Start the app
+4. Start the Expo development server:
 
    ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
+5. Open Expo Go on your mobile device and scan the QR code, or use an available emulator.
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Testing
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+The application can be tested by:
 
-## Get a fresh project
+1. Pressing **Solve +1** to increase the solved count.
+2. Pressing **Reset** to return the solved count to zero.
+3. Solving five or more problems to display the **Great job!** message.
+4. Pressing **Start** to begin the stopwatch.
+5. Pressing **Stop** to pause the stopwatch.
+6. Starting and stopping the timer to check that it works correctly.
 
-When you're ready, run:
+## Learning Objectives
 
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-### Other setup steps
-
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+This activity demonstrates how to manage component state, use React hooks, create a custom hook, pass props between components, handle button events, conditionally render content, and clean up timer intervals.
