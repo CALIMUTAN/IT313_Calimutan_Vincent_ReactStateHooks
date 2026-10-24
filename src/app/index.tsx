@@ -8,91 +8,102 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { WebBadge } from '@/components/web-badge';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { Button , Text, View} from 'react-native';
+import {useState, useEffect} from "react";
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
+type PracticeTrackerProps = {
+ solved: number;
+ onSolve:() => void;
+ onReset: () => void;
+};
+
+function PracticeTracker({
+  solved,
+  onSolve,
+  onReset,
+}:  PracticeTrackerProps) {
+  return (
+    <View>
+      <Text>Solved: {solved}</Text>
+      <Button title= "Solve +1" onPress={onSolve}/>
+      <Button title= "Reset" onPress={onReset}/>    
+
+      {solved >= 5 && <Text>Great Job!</Text>} 
+    </View>
+  )
+}
+
+function useStopwatch(isRunning: boolean) {
+  const [seconds, setSeconds] = useState(0);
+
+  useEffect(() => {
+    if (!isRunning) return;
+
+    const interval = setInterval(() => {
+      setSeconds ((s) => s+1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isRunning]);
+
+    return seconds;
   }
-  if (Device.isDevice) {
+
+  type StopwacthProps = {
+    seconds: number;
+    isRunning: boolean;
+  };
+
+  function Stopwatch ({seconds, isRunning}: StopwacthProps) {
     return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
+      <View>
+      <Text>Time: {seconds} seconds</Text>
+      <Text> {isRunning ? "Running..." : "Paused"}</Text>
+      </View>
     );
+  };
+
+  export default function Labscreen()  {
+    const [solved,setSolved] = useState(0);
+    const [isRunning, setIsRunning] = useState(false);
+
+    const seconds = useStopwatch(isRunning);
+    
+  function handleSolve(){
+    setSolved((s) => s+1);
   }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
+
+  function handleReset() {
+    setSolved(0);
+  }
+function handleStart(){
+  setIsRunning(true);
 }
 
-export default function HomeScreen() {
-  return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
-
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
-
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
-  );
+function handleStop() {
+  setIsRunning(false);
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
-});
+return (
+  <View style= {{padding:20, gap:10}}>
+    <Text>Practice Tracker</Text>
+
+    <PracticeTracker
+    solved= {solved}
+    onSolve={handleSolve}
+    onReset={handleReset}
+    />
+  <Text>Stopwatch</Text>
+  <Stopwatch
+    seconds={seconds}
+    isRunning={isRunning}
+  />
+  <Button title = "Start" onPress ={handleStart} />
+  <Button title = "Stop" onPress ={handleStop} />
+
+  </View>
+);
+}
+
+
+
